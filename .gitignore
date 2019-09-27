@@ -1,0 +1,14 @@
+.env
+__pycache__/
+.DS_Store
+*.dump
+*.pyc
+data.db
+.venv
+
+/log/*
+/tmp/*
+**.orig
+latest.dump
+erl_crash.dump
+sandbox.py

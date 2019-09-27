@@ -1,0 +1,21 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t jzumaran/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true jzumaran/react-test npm test
+
+after_success:
+  - docker build -t jzumaran/multi-client ./client
+  - docker build -t jzumaran/multi-nginx ./nginx
+  - docker build -t jzumaran/multi-server ./server
+  - docker build -t jzumaran/multi-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push jzumaran/multi-client
+  - docker push jzumaran/multi-nginx
+  - docker push jzumaran/multi-server
+  - docker push jzumaran/multi-worker
